@@ -4,3 +4,4 @@ project(2015)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(day01 day01/main.cpp)
+add_executable(day02 day02/main.cpp)

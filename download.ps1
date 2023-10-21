@@ -1,1 +1,1 @@
-wsl curl -H "Content-Type: text/plain" -b "session=53616c7465645f5f9e62ba0190fc5a7f27f2c3e265a94c7a71812b6a92b15838f3d3aa46d27d34887f31a757bbb7da6650657124f0229cfeec45435d69dc50e2" https://adventofcode.com/2015/day/1/input > input.txt
+wsl curl -H "Content-Type: text/plain" -b "session=53616c7465645f5f9e62ba0190fc5a7f27f2c3e265a94c7a71812b6a92b15838f3d3aa46d27d34887f31a757bbb7da6650657124f0229cfeec45435d69dc50e2" https://adventofcode.com/2015/day/2/input > input.txt
