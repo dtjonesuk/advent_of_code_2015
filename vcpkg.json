@@ -1,0 +1,16 @@
+{
+  "name" : "2015",
+  "version-string" : "1.0.0",
+  "builtin-baseline" : "830f86fb309ad7167468a433a890b7415fbb90a5",
+  "dependencies" : [ {
+    "name" : "cryptopp",
+    "version>=" : "8.9.0",
+    "$comment" : "  # this is heuristically generated, and may not be correct\n\n  find_package(cryptopp CONFIG REQUIRED)\n\n  target_link_libraries(main PRIVATE cryptopp::cryptopp)\n"
+  }, {
+    "name" : "vcpkg-cmake",
+    "version>=" : "2023-05-04"
+  }, {
+    "name" : "vcpkg-cmake-config",
+    "version>=" : "2022-02-06#1"
+  } ]
+}

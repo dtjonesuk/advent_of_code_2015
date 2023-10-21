@@ -3,6 +3,15 @@ project(2015)
 
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(cryptopp CONFIG REQUIRED)
+
 add_executable(day01 day01/main.cpp)
 add_executable(day02 day02/main.cpp)
 add_executable(day03 day03/main.cpp)
+
+add_executable(day04 day04/main.cpp
+        day04/main.cpp)
+target_link_libraries(day04 PRIVATE cryptopp::cryptopp)
+
+
+
