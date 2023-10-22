@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.26)
 project(2015)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 find_package(cryptopp CONFIG REQUIRED)
 
@@ -13,5 +13,5 @@ add_executable(day04 day04/main.cpp
         day04/main.cpp)
 target_link_libraries(day04 PRIVATE cryptopp::cryptopp)
 
-
 add_executable(day05 day05/main.cpp)
+add_executable(day06 day06/main.cpp)
