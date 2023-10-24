@@ -1,0 +1,10 @@
+START
+<statement> -> <expression> <assign> <wire>
+
+<expression> -> <wire> <binary_op> <wire>
+<expression> -> <number> <binary_op> <wire>
+<expression> -> <unary_op> <wire>
+
+<wire> -> <lowercase*>
+<number> -> <numeric*>
+<assign> -> "-->"
