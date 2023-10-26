@@ -25,3 +25,4 @@ add_executable(day10 day10/main.cpp)
 add_executable(day11 day11/main.cpp
         day11/Password.cpp
         day11/Password.h)
+add_executable(day12 day12/main.cpp)
