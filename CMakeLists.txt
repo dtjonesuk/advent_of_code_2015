@@ -22,3 +22,6 @@ add_executable(day08 day08/main.cpp)
 add_executable(day09 day09/main.cpp
         day09/Cities.h)
 add_executable(day10 day10/main.cpp)
+add_executable(day11 day11/main.cpp
+        day11/Password.cpp
+        day11/Password.h)
