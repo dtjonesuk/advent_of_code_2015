@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 find_package(cryptopp CONFIG REQUIRED)
 
-add_executable(day01 day01/main.cpp)
+add_executable(day01 day01/main.cpp
+)
 add_executable(day02 day02/main.cpp)
 add_executable(day03 day03/main.cpp)
 
@@ -26,3 +27,8 @@ add_executable(day11 day11/main.cpp
         day11/Password.cpp
         day11/Password.h)
 add_executable(day12 day12/main.cpp)
+add_executable(day13 day13/main.cpp
+        day13/Person.h
+        day13/Party.cpp
+        day13/Party.h
+        day13/Person.cpp)
