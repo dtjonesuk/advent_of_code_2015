@@ -32,3 +32,6 @@ add_executable(day13 day13/main.cpp
         day13/Party.cpp
         day13/Party.h
         day13/Person.cpp)
+add_executable(day14 day14/main.cpp
+        day14/Reindeer.cpp
+        day14/Reindeer.h)
