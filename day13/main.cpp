@@ -23,6 +23,7 @@ void partOne() {
     }
 
     auto& attendees = party.getAttendees();
+
     std::vector<Person> people;
     std::transform(attendees.cbegin(), attendees.cend(), std::back_inserter(people), [](auto p) { return p.second; });
 
@@ -71,7 +72,7 @@ void partTwo() {
             bestHappiness = h;
             best = p;
 
-            std::cout << best << std::endl;
+            std::cout << best << bestHappiness << std::endl;
         }
     } while(std::next_permutation(people.begin(), people.end(), [](auto& a, auto& b) { return a.name < b.name; }));
 

@@ -6,17 +6,6 @@
 #include <regex>
 #include <algorithm>
 
-//void addSelf(const std::string &myName) {
-//    std::map<std::string, int> sentiments;
-//    for (auto& [name, person] : people) {
-//        sentiments[name] = 0;
-//        person.sentiments[myName] = 0;
-//    }
-//    Person &self = people[myName];
-//    self.name = myName;
-//    self.sentiments = sentiments;
-//}
-
 void Party::addAttendee(const std::string& attendee) {
     std::map<std::string, int> sentiments;
     for (auto& [name, person] : attendees) {
@@ -26,10 +15,11 @@ void Party::addAttendee(const std::string& attendee) {
     Person &self = attendees[attendee];
     self.name = attendee;
     self.sentiments = sentiments;
+
     attendees[attendee] = self;
 }
 
-const std::string sentimentExpression = "([A-Z]\\w+) would (gain|lose) (\\d+) happiness units by sitting next to ([A-Z]\\w+)";
+const static std::string sentimentExpression = "([A-Z]\\w+) would (gain|lose) (\\d+) happiness units by sitting next to ([A-Z]\\w+)";
 
 void Party::parseAttendee(const std::string &attendee) {
     std::regex re(sentimentExpression);
