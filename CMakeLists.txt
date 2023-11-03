@@ -38,3 +38,6 @@ add_executable(day14 day14/main.cpp
 add_executable(day15 day15/main.cpp
         day15/Recipe.cpp
         day15/Recipe.h)
+add_executable(day16 day16/main.cpp
+        day16/Aunt.cpp
+        day16/Aunt.h)
