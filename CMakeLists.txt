@@ -59,3 +59,8 @@ target_link_libraries(day18
         $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
 target_link_libraries(day18 PRIVATE SDL2::SDL2_gfx)
+add_executable(day19 day19/main.cpp
+        day19/Molecule.cpp
+        day19/Molecule.h
+        day19/Element.cpp
+        day19/Element.h)
