@@ -65,3 +65,12 @@ add_executable(day19 day19/main.cpp
         day19/Element.cpp
         day19/Element.h)
 add_executable(day20 day20/main.cpp)
+add_executable(day21 day21/main.cpp
+        day21/Shop.cpp
+        day21/Shop.h
+        day21/Item.cpp
+        day21/Item.h
+        day21/Character.cpp
+        day21/Character.h
+        day21/Battle.cpp
+        day21/Battle.h)
