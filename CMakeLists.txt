@@ -64,3 +64,4 @@ add_executable(day19 day19/main.cpp
         day19/Molecule.h
         day19/Element.cpp
         day19/Element.h)
+add_executable(day20 day20/main.cpp)
