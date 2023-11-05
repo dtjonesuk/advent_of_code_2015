@@ -3,7 +3,11 @@ project(2015)
 
 set(CMAKE_CXX_STANDARD 20)
 
+
 find_package(cryptopp CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
+find_package(sdl2-gfx CONFIG REQUIRED)
+
 
 add_executable(day01 day01/main.cpp
 )
@@ -41,3 +45,17 @@ add_executable(day15 day15/main.cpp
 add_executable(day16 day16/main.cpp
         day16/Aunt.cpp
         day16/Aunt.h)
+add_executable(day17 day17/main.cpp)
+add_executable(day18 day18/main.cpp
+        day18/Light.cpp
+        day18/Light.h
+        day18/LightGrid.cpp
+        day18/LightGrid.h
+        day18/LightWindow.cpp
+        day18/LightWindow.h)
+target_link_libraries(day18
+        PRIVATE
+        $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+        $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+)
+target_link_libraries(day18 PRIVATE SDL2::SDL2_gfx)
