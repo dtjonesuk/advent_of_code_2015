@@ -81,3 +81,7 @@ add_executable(day22 day22/main.cpp
         day22/Character.h
         day22/Spell.cpp
         day22/Spell.h)
+add_executable(day23 day23/Computer.cpp day23/Computer.h
+        day23/main.cpp
+        day23/Instruction.cpp
+        day23/Instruction.h)
