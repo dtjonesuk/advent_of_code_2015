@@ -74,3 +74,10 @@ add_executable(day21 day21/main.cpp
         day21/Character.h
         day21/Battle.cpp
         day21/Battle.h)
+add_executable(day22 day22/main.cpp
+       day22/Battle.cpp
+        day22/Battle.h
+        day22/Character.cpp
+        day22/Character.h
+        day22/Spell.cpp
+        day22/Spell.h)
