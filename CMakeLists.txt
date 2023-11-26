@@ -85,3 +85,4 @@ add_executable(day23 day23/Computer.cpp day23/Computer.h
         day23/main.cpp
         day23/Instruction.cpp
         day23/Instruction.h)
+add_executable(day24 day24/main.cpp)
