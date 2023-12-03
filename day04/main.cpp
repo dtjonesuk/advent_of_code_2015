@@ -1,80 +1,126 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <iterator>
-#include <algorithm>
-#include <map>
-#include <cassert>
+#include "../advent.h"
+#include <execution>
+#include "md5.h"
 
-#include <cryptopp/cryptlib.h>
-#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
-#include <cryptopp/md5.h>
-#include <cryptopp/hex.h>
+namespace day04 {
+/// Change this to the current day
+    static const std::string day = "04";
+    static const std::string inputFilename = "..\\day" + day + "\\input.txt";
+    static const std::string testFilename = "..\\day" + day + "\\test.txt";
 
-// this is today's input
-static const std::string secretKey = "iwrupvqb";
+    struct PuzzleInput {
+        const std::string secret = "iwrupvqb";
 
-std::string getMD5HexString(const std::string& input)
-{
-    using namespace CryptoPP;
-
-    Weak::MD5 hash;
-    std::string digest, encoded;
-
-    hash.Update(reinterpret_cast<const byte*>(input.c_str()), input.size());
-    digest.resize(hash.DigestSize());
-    hash.Final(reinterpret_cast<byte*>(&digest[0]));
-
-    StringSource ss(reinterpret_cast<const byte *>(digest.c_str()), digest.size(), true, new HexEncoder( new StringSink(encoded)));
-
-    return encoded;
-}
-void partOne() {
-
-    int i = 0;
-    std::string hash;
-
-    while (true) {
-        hash = getMD5HexString(secretKey + std::to_string(i));
-
-        if (hash.compare(0, 5, "00000") == 0) {
-            break;
+        explicit PuzzleInput(const std::string &filename) {
         }
-        ++i;
+
+    };
+
+    std::string getMD5HexString(const std::string &str) {
+        Chocobo1::MD5 md5;
+
+        md5.addData(str.c_str(), str.size());
+        md5.finalize();
+
+        return md5.toString();
     }
 
-    std::cout << "Digest: " << hash << std::endl;
-
-    std::cout << "Part One: integer = " << i << std::endl;
-
-}
-
-void testMD5() {
-    assert(getMD5HexString(secretKey) == "B62D7001F13AF4BD310E7ECFF0720509");
-}
-
-void partTwo() {
-    int i = 0;
-    std::string hash;
-
-    while (i >= 0) {
-        hash = getMD5HexString(secretKey + std::to_string(i));
-
-        if (hash.compare(0, 6, "000000") == 0) {
-            break;
-        }
-        ++i;
+/// Unit Test
+    void test() {
+        PuzzleInput input(testFilename);
+        std::string str = getMD5HexString(input.secret);
+        assert(str == "b62d7001f13af4bd310e7ecff0720509");
     }
 
-    std::cout << "Digest: " << hash << std::endl;
+/// Part One Solution
+    int partOne() {
+        PuzzleInput input(inputFilename);
 
-    std::cout << "Part Two: integer = " << i << std::endl;
+        const int block_size = 1024 * 256;
+        int block_start = 0;
+
+        std::mutex mutex;
+        int index;
+        bool halt = false;
+
+        while (!halt) {
+            std::vector<int> block(block_size);
+            std::iota(block.begin(), block.end(), block_start);
+
+            std::cout << "\rStarting block " << block_start  << std::flush;
+
+            // parallel for loop over the current block of numbers
+            // nb i don't know a way to terminate the loop early
+            std::for_each(std::execution::par, block.begin(), block.end(), [&](int n) {
+                std::string hash = getMD5HexString(input.secret + std::to_string(n));
+                if (hash.starts_with("00000")) {
+                    std::lock_guard<std::mutex> guard(mutex);
+                    if (!halt) {
+                        halt = true;
+                        index = n;
+                    }
+                }
+            });
+            block_start += block_size;
+        }
+        std::cout << "\r";
+
+        return index;
+    }
+
+
+/// Part Two Solution
+    int partTwo() {
+        PuzzleInput input(inputFilename);
+
+        const int block_size = 1024 * 256;
+        int block_start = 0;
+        int index;
+        bool halt = false;
+        std::mutex mutex;
+
+        while (!halt) {
+            std::vector<int> block(block_size);
+            std::iota(block.begin(), block.end(), block_start);
+
+            std::cout << "\rStarting block " << block_start <<  std::flush;
+
+            std::for_each(std::execution::par, block.begin(), block.end(), [&](int n) {
+                std::string hash = getMD5HexString(input.secret + std::to_string(n));
+                if (hash.starts_with("000000")) {
+                    std::lock_guard<std::mutex> guard(mutex);
+                    if (!halt) {
+                        halt = true;
+                        index = n;
+                    }
+                }
+            });
+
+            block_start += block_size;
+        }
+
+        std::cout << "\r";
+
+        return index;
+    }
 }
-
 
 int main() {
-    testMD5();
+    using namespace day04;
+    test();
 
-    // partOne();
-    partTwo();
+    {
+        std::cout << std::fixed << std::setprecision(3);
+        auto [seconds, result] = advent::eval<int>(&partOne);
+
+        std::cout << "Day " << day << ": Part One = " << result << "\t\t (completed in " << seconds << "s)."
+                  << std::endl;
+    }
+    {
+        std::cout << std::fixed << std::setprecision(3);
+        auto [seconds, result] = advent::eval<int>(&partTwo);
+
+        std::cout << "Day " << day << ": Part One = " << result << "\t\t (completed in " << seconds << "s)."
+                  << std::endl;
+    }
 }
