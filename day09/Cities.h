@@ -1,44 +1,38 @@
 //
-// Created by David on 25/10/2023.
+// Created by David on 03/12/2023.
 //
 
 #ifndef INC_2015_CITIES_H
 #define INC_2015_CITIES_H
+
 #include <string>
 #include <map>
-#include <numeric>
+#include <regex>
+#include <algorithm>
+#include <execution>
 
-struct City;
-struct Route;
+#include "City.h"
+#include "Trip.h"
 
-struct City {
-    std::string name;
-    std::vector<Route> routes;
+namespace day09 {
 
-    static std::map<std::string, City> Cities;
-};
+    class Cities {
+    public:
+        int size() const;
 
-struct Route {
-    std::string destination;
-    int distance;
+        void insert(const std::string &line);
 
-    City& city() {
-        return City::Cities[destination];
-    }
-};
+        TripList visit_city(const City &city, VisitedSet &visited, const Trip &trip) const;
 
-class Trip : public std::vector<Route> {
-public:
-  int distance() {
-      return std::accumulate(begin(), end(), 0, [](auto acc, auto& r){
-          return std::move(acc) + r.distance;
-      });
-  }
-};
-//typedef std::vector<Route> Trip;
-typedef std::vector<Trip> TripList;
-typedef std::set<std::string> VisitedSet;
+        TripList find_trips() const;
 
-std::map<std::string, City> City::Cities;
+        void print(std::ostream& os) const;
+
+        std::map<std::string, City> cities;
+    private:
+        const std::regex re{"(.+) to (.+) = (\\d+)"};
+    };
+
+} // day09
 
 #endif //INC_2015_CITIES_H

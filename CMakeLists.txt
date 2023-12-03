@@ -33,7 +33,13 @@ add_executable(day07 day07/main.cpp
         day07/Node.h)
 add_executable(day08 day08/main.cpp)
 add_executable(day09 day09/main.cpp
-        day09/Cities.h)
+        day09/Trip.cpp
+        day09/Trip.h
+        day09/City.cpp
+        day09/City.h
+        day09/Cities.cpp
+        day09/Cities.h
+)
 add_executable(day10 day10/main.cpp)
 add_executable(day11 day11/main.cpp
         day11/Password.cpp
