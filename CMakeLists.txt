@@ -28,7 +28,9 @@ add_executable(day06 day06/main.cpp
         day06/Command.h)
 add_executable(day07 day07/main.cpp
         day07/Parser.cpp
-        day07/Parser.h)
+        day07/Parser.h
+        day07/Node.cpp
+        day07/Node.h)
 add_executable(day08 day08/main.cpp)
 add_executable(day09 day09/main.cpp
         day09/Cities.h)
