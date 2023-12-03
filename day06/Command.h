@@ -9,20 +9,21 @@
 #include <sstream>
 #include <utility>
 
-enum command_t {
-    toggle,
-    turn_on,
-    turn_off
-};
+namespace day06 {
+    enum command_t {
+        toggle,
+        turn_on,
+        turn_off
+    };
 
-struct Command {
-    Command(const std::string &line);
+    struct Command {
+        Command(const std::string &line);
 
-    command_t cmd;
-    std::pair<int,int> from;
-    std::pair<int,int> to;
+        command_t cmd;
+        std::pair<int, int> from;
+        std::pair<int, int> to;
 
-};
-
+    };
+}
 
 #endif //INC_2015_COMMAND_H
