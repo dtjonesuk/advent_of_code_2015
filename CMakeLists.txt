@@ -23,7 +23,9 @@ add_executable(day04 day04/main.cpp
 target_link_libraries(day04 PRIVATE cryptopp::cryptopp)
 
 add_executable(day05 day05/main.cpp)
-add_executable(day06 day06/main.cpp)
+add_executable(day06 day06/main.cpp
+        day06/Command.cpp
+        day06/Command.h)
 add_executable(day07 day07/main.cpp
         day07/Parser.cpp
         day07/Parser.h)

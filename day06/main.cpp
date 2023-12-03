@@ -1,154 +1,115 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <iterator>
-#include <algorithm>
-#include <cassert>
-#include <vector>
-#include <functional>
-#include <numeric>
+#include "../advent.h"
+#include "Command.h"
 
-constexpr int size_x = 1000;
-constexpr int size_y = 1000;
-constexpr int index(int x, int y) { return y * size_y + x; }
+namespace day06 {
+/// Change this to the current day
+    static const std::string day = "06";
+    static const std::string inputFilename = "..\\day" + day + "\\input.txt";
+    static const std::string testFilename = "..\\day" + day + "\\test.txt";
 
-enum command_t {
-    toggle,
-    turn_on,
-    turn_off
-};
+    struct PuzzleInput {
+        std::vector<Command> commands;
 
-void partOne() {
-    std::ifstream input("..\\day06\\input.txt");
+        explicit PuzzleInput(const std::string &filename) {
+            std::ifstream istream(filename);
+            std::string line;
 
-    std::vector<bool> lights(size_x * size_y, false);
-
-    std::string line;
-    int total = 0;
-
-    while (std::getline(input, line)) {
-        std::stringstream ss(line);
-
-        std::string command1, command2, through;
-        command_t command;
-
-        int x1, y1, x2, y2;
-        char comma;
-
-        // parse the command
-        ss >> command1;
-        if (command1 == "turn") {
-            ss >> command2;
-            if (command2 == "on") {
-                command = turn_on;
-            } else {
-                command = turn_off;
+            while (std::getline(istream, line)) {
+                commands.emplace_back(line);
             }
-        } else {
-            command = toggle;
         }
 
-        // parse the co-ordinates
-        ss >> x1 >> comma >> y1 >> through >> x2 >> comma >> y2;
+    };
+
+    constexpr int size_x = 1000;
+    constexpr int size_y = 1000;
+
+    constexpr int index(int x, int y) { return y * size_y + x; }
+
+/// Unit Test
+    void test() {
+        PuzzleInput input(testFilename);
+        assert(true);
+    }
+
+/// Part One Solution
+    int partOne() {
+        PuzzleInput input(inputFilename);
+
+        std::vector<int> lights(size_x * size_y, 0);
 
         // operate on the block of lights
-        for (int x = x1; x <= x2; x++) {
-            for (int y = y1; y <= y2; y++) {
-                switch (command) {
-                    case turn_on:
-                        lights[index(x,y)] = true;
-                        break;
-                    case turn_off:
-                        lights[index(x,y)] = false;
-                        break;
-                    case toggle:
-                        lights[index(x, y)] = !lights[index(x, y)];
-                        break;
-                    default:
-                        std::cerr << "Invalid command!" << std::endl;
-                        exit(1);
-                        break;
+        for (Command &command : input.commands) {
+            for (int x = command.from.first; x <= command.to.first; x++) {
+                for (int y = command.from.second; y <= command.to.second; y++) {
+                    switch (command.cmd) {
+                        case turn_on:
+                            lights[index(x, y)] = 1;
+                            break;
+                        case turn_off:
+                            lights[index(x, y)] = 0;
+                            break;
+                        case toggle:
+                            lights[index(x, y)] = !lights[index(x, y)];
+                            break;
+                    }
                 }
             }
         }
 
-        //std::cout << command << " (" << x1 << ", " << y1 << ") (" << x2 << ", " << y2 << ")" << std::endl;
+        // calculate how many lights are on
+        int total = std::count(lights.begin(), lights.end(), 1);
+
+        return total;
     }
 
-    // calculate how many lights are on
-    total = std::count(lights.begin(), lights.end(), true);
 
-    std::cout << "Part One: lights on = " << total << std::endl;
+/// Part Two Solution
+    int partTwo() {
+        PuzzleInput input(inputFilename);
 
-}
-
-void partTwo() {
-    std::ifstream input("..\\day06\\input.txt");
-
-    std::vector<int> lights(size_x * size_y, 0);
-
-    std::string line;
-    int total = 0;
-
-    while (std::getline(input, line)) {
-        std::stringstream ss(line);
-
-        std::string command1, command2, through;
-        command_t command;
-
-        int x1, y1, x2, y2;
-        char comma;
-
-        // parse the command
-        ss >> command1;
-        if (command1 == "turn") {
-            ss >> command2;
-            if (command2 == "on") {
-                command = turn_on;
-            } else {
-                command = turn_off;
-            }
-        } else {
-            command = toggle;
-        }
-
-        // parse the co-ordinates
-        ss >> x1 >> comma >> y1 >> through >> x2 >> comma >> y2;
+        std::vector<int> lights(size_x * size_y, 0);
 
         // operate on the block of lights
-        for (int x = x1; x <= x2; x++) {
-            for (int y = y1; y <= y2; y++) {
-                switch (command) {
-                    case turn_on:
-                        lights[index(x,y)] += 1;
-                        break;
-                    case turn_off:
-                        lights[index(x,y)] = std::max(lights[index(x,y)] - 1, 0);
-                        break;
-                    case toggle:
-                        lights[index(x, y)] += 2;
-                        break;
-                    default:
-                        std::cerr << "Invalid command!" << std::endl;
-                        exit(1);
-                        break;
+        for (Command &command : input.commands) {
+            for (int x = command.from.first; x <= command.to.first; x++) {
+                for (int y = command.from.second; y <= command.to.second; y++) {
+                    switch (command.cmd) {
+                        case turn_on:
+                            lights[index(x, y)] += 1;
+                            break;
+                        case turn_off:
+                            lights[index(x, y)] = std::max(lights[index(x, y)] - 1, 0);
+                            break;
+                        case toggle:
+                            lights[index(x, y)] += 2;
+                            break;
+                    }
                 }
             }
         }
 
-        //std::cout << command << " (" << x1 << ", " << y1 << ") (" << x2 << ", " << y2 << ")" << std::endl;
+        // calculate how many lights are on
+        int total = std::accumulate(lights.begin(), lights.end(), 0);
+
+        return total;
     }
-
-    // calculate how many lights are on
-    //total = std::count_if(lights.begin(), lights.end(), [](bool b) { return b; });
-    total = std::accumulate(lights.begin(), lights.end(), 0);
-
-    std::cout << "Part Two: total brightness = " << total << std::endl;
 }
-
 
 int main() {
+    using namespace day06;
+    test();
 
-    partOne();
-    partTwo();
+    {
+        std::cout << std::fixed << std::setprecision(3);
+        auto [seconds, result] = advent::eval<int>(&partOne);
+
+        std::cout << "Day " << day << ": Part One = " << result << "\t\t (completed in " << seconds << "s).\n";
+    }
+    {
+        std::cout << std::fixed << std::setprecision(3);
+        auto [seconds, result] = advent::eval<int>(&partTwo);
+
+        std::cout << "Day " << day << ": Part One = " << result << "\t\t (completed in " << seconds << "s).\n";
+    }
 }
