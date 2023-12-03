@@ -11,7 +11,9 @@ find_package(sdl2-gfx CONFIG REQUIRED)
 
 add_executable(day01 day01/main.cpp
 )
-add_executable(day02 day02/main.cpp)
+add_executable(day02 day02/main.cpp
+        day02/Present.cpp
+        day02/Present.h)
 add_executable(day03 day03/main.cpp)
 
 add_executable(day04 day04/main.cpp

@@ -1,89 +1,83 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <iterator>
-#include <algorithm>
-#include <cassert>
+#include "../advent.h"
+#include "Present.h"
 
-/* find the surface area of the box, which is 2*l*w + 2*w*h + 2*h*l. The elves also need a little extra paper for each present: the area of the smallest side. */
-int paperRequired(int length, int width, int height) {
-    int required = (2 * length * width) + (2 * width * height) + (2 * height * length);
-    int slack = std::min({length * width, width * height, height * length});
+namespace day02 {
+    /// Change this to the current day
+    static const std::string day = "02";
+    static const std::string inputFilename = "..\\day" + day + "\\input.txt";
+    static const std::string testFilename = "..\\day" + day + "\\test.txt";
 
-    return (required + slack);
-}
+    struct PuzzleInput {
+        std::vector<Present> presents;
 
-/* The ribbon required to wrap a present is the shortest distance around its sides, or the smallest perimeter of any one face.
- * Each present also requires a bow made out of ribbon as well; the feet of ribbon required for the perfect bow is equal to the cubic feet of volume of the present. */
-int ribbonRequired(int length, int width, int height) {
-    int shortestPerimeter = std::min({2 * (length + width), 2 * (width + height), 2 * (height + length)});
-    int volume = length * width * height;
+        explicit PuzzleInput(const std::string &filename) {
+            std::ifstream istream(filename);
+            std::string line;
 
-    return (shortestPerimeter + volume);
-}
+            while (std::getline(istream, line)) {
+                // do something
+                std::stringstream ss(line);
+                int length, width, height;
+                char x;
 
-void testPaperRequired() {
-    assert(paperRequired(2, 3, 4) == 58);
-    assert(paperRequired(1, 1, 10) == 43);
-}
-
-void testRibbonRequired() {
-    assert(ribbonRequired(2, 3, 4) == 34);
-    assert(ribbonRequired(1,1,10) == 14);
-}
-
-void partOne() {
-    std::ifstream input("..\\day02\\input.txt");
-    std::string line;
-    int totalRequired = 0;
-
-    while (std::getline(input, line)) {
-        std::stringstream ss(line);
-        int length, width, height;
-        char x;
-
-        if (ss >> length >> x >> width >> x >> height) {
-            int paper = paperRequired(length, width, height);
-            totalRequired += paper;
-        } else {
-            std::cerr << "Invalid input detected!" << std::endl;
-            exit(1);
+                if (ss >> length >> x >> width >> x >> height) {
+                    presents.emplace_back(length, width, height);
+                }
+            }
         }
+    };
 
+
+    /// Unit Test
+    void test() {
+//        PuzzleInput input(testFilename);
+        assert(Present(2, 3, 4).ribbonRequired() == 34);
+        assert(Present(1, 1, 10).ribbonRequired() == 14);
+        assert(Present(2, 3, 4).paperRequired() == 58);
+        assert(Present(1, 1, 10).paperRequired() == 43);
     }
 
-    std::cout << "Part One: total required = " << totalRequired << std::endl;
+    /// Part One Solution
+    int partOne() {
+        PuzzleInput input(inputFilename);
 
-}
+        int totalRequired = std::reduce(input.presents.begin(), input.presents.end(), 0,
+                                        [](int total, Present &present) {
+                                            return total + present.paperRequired();
+                                        });
 
-void partTwo() {
-    std::ifstream input("..\\day02\\input.txt");
-    std::string line;
-    int totalRequired = 0;
-
-    while (std::getline(input, line)) {
-        std::stringstream ss(line);
-        int length, width, height;
-        char x;
-
-        if (ss >> length >> x >> width >> x >> height) {
-            int ribbon = ribbonRequired(length, width, height);
-            totalRequired += ribbon;
-        } else {
-            std::cerr << "Invalid input detected!" << std::endl;
-            exit(1);
-        }
-
+        return totalRequired;
     }
 
-    std::cout << "Part Two: total required = " << totalRequired << std::endl;
-}
 
+    /// Part Two Solution
+    int partTwo() {
+        PuzzleInput input(inputFilename);
+        int totalRequired = std::reduce(input.presents.begin(), input.presents.end(), 0,
+                                        [](int total, Present &present) {
+                                            return total + present.ribbonRequired();
+                                        });
+
+        return totalRequired;
+    }
+}
 
 int main() {
-    testPaperRequired();
-    testRibbonRequired();
+    using namespace day02;
+    test();
 
-    partOne();
-    partTwo();
+    {
+        std::cout << std::fixed << std::setprecision(3);
+        auto [seconds, result] = advent::eval<int>(&partOne);
+
+        std::cout << "Day " << day << ": Part One = " << result << "\t\t (completed in " << seconds << "s).\n";
+    }
+    {
+        std::cout << std::fixed << std::setprecision(3);
+        auto [seconds, result] = advent::eval<int>(&partTwo);
+
+        std::cout << "Day " << day << ": Part One = " << result << "\t\t (completed in " << seconds << "s).\n";
+    }
 }
+
+

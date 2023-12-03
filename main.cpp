@@ -29,8 +29,6 @@ namespace day## {
 
     /// Part One Solution
     int partOne() {
-        using namespace std::views;
-
         PuzzleInput input(inputFilename);
 
         return 0;
@@ -39,14 +37,10 @@ namespace day## {
 
     /// Part Two Solution
     int partTwo() {
-        using namespace std::views;
-
         PuzzleInput input(inputFilename);
 
         return 0;
     }
-
-    void run() {
 }
 
 int main() {
